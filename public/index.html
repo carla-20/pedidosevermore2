@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barra de Tragos y Bebidas</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="menu">
+        <button class="active" onclick="mostrarSeccion('tomar-pedido')">Tomar Pedido</button>
+        <button onclick="mostrarSeccion('pedidos-confirmados')">Pedidos Confirmados</button>
+        <button onclick="mostrarSeccion('totales-pago')">Totales por Tipo de Pago</button>
+    </div>
+
+    <div id="tomar-pedido" class="container active">
+        <h1>Tomar Pedido</h1>
+
+        <div class="timestamp">
+            <p id="current-datetime"></p>
+        </div>
+
+        <div class="section">
+            <h2>Tragos</h2>
+            <label>
+                Gin Tonic ($6.000)
+                <button onclick="cambiarCantidad('gin-tonic', -1)">-</button>
+                <input type="number" id="gin-tonic" min="0" value="0" oninput="calcularTotal()">
+                <button onclick="cambiarCantidad('gin-tonic', 1)">+</button>
+            </label>
+            <label>
+                Vodka/Speed ($6.000)
+                <button onclick="cambiarCantidad('vodka-speed', -1)">-</button>
+                <input type="number" id="vodka-speed" min="0" value="0" oninput="calcularTotal()">
+                <button onclick="cambiarCantidad('vodka-speed', 1)">+</button>
+            </label>
+            <label>
+                Fernet/Coca ($6.000)
+                <button onclick="cambiarCantidad('fernet-coca', -1)">-</button>
+                <input type="number" id="fernet-coca" min="0" value="0" oninput="calcularTotal()">
+                <button onclick="cambiarCantidad('fernet-coca', 1)">+</button>
+            </label>
+        </div>
+
+        <div class="section">
+            <h2>Cerveza</h2>
+            <label>
+                Lata Andes ($5.000)
+                <button onclick="cambiarCantidad('lata-andes', -1)">-</button>
+                <input type="number" id="lata-andes" min="0" value="0" oninput="calcularTotal()">
+                <button onclick="cambiarCantidad('lata-andes', 1)">+</button>
+            </label>
+        </div>
+
+        <div class="section">
+            <h2>Sin Alcohol</h2>
+            <label>
+                Agua ($3.500)
+                <button onclick="cambiarCantidad('agua', -1)">-</button>
+                <input type="number" id="agua" min="0" value="0" oninput="calcularTotal()">
+                <button onclick="cambiarCantidad('agua', 1)">+</button>
+            </label>
+            <label>
+                Speed ($4.000)
+                <button onclick="cambiarCantidad('speed', -1)">-</button>
+                <input type="number" id="speed" min="0" value="0" oninput="calcularTotal()">
+                <button onclick="cambiarCantidad('speed', 1)">+</button>
+            </label>
+            <label>
+                Gaseosa ($3.500)
+                <button onclick="cambiarCantidad('gaseosa', -1)">-</button>
+                <input type="number" id="gaseosa" min="0" value="0" oninput="calcularTotal()">
+                <button onclick="cambiarCantidad('gaseosa', 1)">+</button>
+            </label>
+        </div>
+
+        <div class="section">
+            <h2>Tipo de Pago</h2>
+            <div class="payment-option" id="pago-efectivo" onclick="seleccionarPago('efectivo')">Efectivo</div>
+            <div class="payment-option" id="pago-digital" onclick="seleccionarPago('digital')">Digital</div>
+            <div class="payment-option" id="pago-consumicion" onclick="seleccionarPago('consumicion')">Consumición</div>
+        </div>
+
+        <button class="confirmar" onclick="confirmarPedido()">Confirmar Pedido</button>
+
+        <div class="section totals" id="total-section">
+            <p>Total: $<span id="total-amount">0</span></p>
+            <p>Método de Pago: <span id="payment-method">Ninguno</span></p>
+            <p>Número de Pedido: <span id="order-number">1</span></p>
+        </div>
+    </div>
+
+    <div id="pedidos-confirmados" class="container">
+        <h2>Pedidos Confirmados</h2>
+        <div class="order-list" id="order-list"></div>
+    </div>
+
+    <div id="totales-pago" class="container">
+        <h2>Totales por Tipo de Pago</h2>
+        <p>Total Efectivo: $<span id="total-efectivo">0</span></p>
+        <p>Total Digital: $<span id="total-digital">0</span></p>
+        <p>Total Consumición: $<span id="total-consumicion">0</span></p>
+        <p>Total General: $<span id="total-general">0</span></p>
+        <button class="descargar" onclick="descargarExcel()">Descargar Archivo</button>
+    </div> 
+    
+    <script src="./scripts.js"></script>
+    <!--<script src="/socket.io/socket.io.js"></script> -->
+</body>
+</html>
